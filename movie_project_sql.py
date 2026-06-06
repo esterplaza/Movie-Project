@@ -8,9 +8,9 @@ import requests
 import colorama
 import matplotlib.pyplot as plot
 from colorama import Fore, Style
-import movie_storage_sql as storage
+import movie_storage.movie_storage_sql as storage
 
-API_KEY = "388d4af4"
+API_KEY = "ENTER YOUR API"
 HTML_TEMPLATE_PATH = "_static\\index_template.html"
 
 colorama.init(autoreset=True)
