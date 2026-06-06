@@ -378,6 +378,7 @@ def serialize_movie(title, info):
     """creates a html card for an item"""
     year = info.get("year")
     poster = info.get("poster")
+    rating = info.get("rating")
     note = info.get("note")
     output = ""
     output += "<li>\n"
@@ -387,6 +388,7 @@ def serialize_movie(title, info):
         output += f'<div class="note">{note}</div>\n'
     output += f'<div class="movie-title">{title}</div>\n'
     output += f'<div class="movie-year">{year}</div>\n'
+    output += f'<div class="movie-rating">Rating: {rating}</div>\n'
     output += "</div>\n"
     output += "</li>\n"
     return output
