@@ -18,7 +18,8 @@ with engine.connect() as connection:
                                year INTEGER NOT NULL,
                                rating REAL NOT NULL,
                                poster TEXT UNIQUE NOT NULL,
-                               user_id INTEGER,
+                               user_id INTEGER NOT NULL,
+                               note TEXT CHECK (length(note) <= 50),
                                FOREIGN KEY(user_id) 
                                REFERENCES users(user_id))"""))
 
@@ -68,17 +69,21 @@ def list_movies(user_id):
     """Retrieve all movies from the database."""
     with engine.connect() as connection:
         result = connection.execute(
-            text(
-                """SELECT movies.title, movies.year, movies.rating, movies.poster, users.user_id 
-                   FROM movies JOIN users on movies.user_id = users.user_id 
-                   WHERE users.user_id = :user_id"""
-            ),
+            text("""SELECT title, year, rating, poster, user_id, note FROM movies 
+                    WHERE user_id = :user_id"""),
             {"user_id": user_id},
         )
         movies = result.fetchall()
 
     return {
-        row[0]: {"year": row[1], "rating": row[2], "poster": row[3]} for row in movies
+        row[0]: {
+            "year": row[1],
+            "rating": row[2],
+            "poster": row[3],
+            "user_id": row[4],
+            "note": row[5],
+        }
+        for row in movies
     }
 
 
@@ -112,8 +117,9 @@ def delete_movie(title, user_id):
     with engine.connect() as connection:
         try:
             connection.execute(
-                text("""DELETE FROM movies 
-                        WHERE title = :title AND user_id = :user_id"""),
+                text(
+                    """DELETE FROM movies WHERE title = :title AND user_id = :user_id"""
+                ),
                 {"title": title, "user_id": user_id},
             )
             connection.commit()
@@ -126,15 +132,15 @@ def delete_movie(title, user_id):
             print(f"Error: {e}")
 
 
-def update_movie(title, rating, user_id):
+def update_movie(title, note, user_id):
     """Update a movie's rating in the database."""
     with engine.connect() as connection:
         try:
             connection.execute(
                 text("""UPDATE movies
-                        SET rating = :rating
+                        SET note = :note
                         WHERE title = :title AND user_id = :user_id """),
-                {"title": title, "rating": rating, "user_id": user_id},
+                {"title": title, "note": note, "user_id": user_id},
             )
             connection.commit()
             print(

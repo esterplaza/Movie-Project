@@ -9,7 +9,7 @@ import movie_storage.movie_storage_sql as storage
 import main
 
 API_KEY = "388d4af4"
-HTML_TEMPLATE_PATH = "../_static/index_template.html"
+HTML_TEMPLATE_PATH = "_static/index_template.html"
 
 colorama.init(autoreset=True)
 
@@ -58,7 +58,7 @@ def list_movies(user_id, user):
     """
     movies = storage.list_movies(user_id)
     number_of_movies = len(movies)
-    print(Fore.BLUE + f"{number_of_movies} movies in total")
+    print(Fore.BLUE + f"{user}: {number_of_movies} movies in total")
     for movie, info in movies.items():
         rating = info["rating"]
         year = info["year"]
@@ -71,7 +71,7 @@ def add_movie(user_id, user):
     fetched from the IMDb database through the omdbapi"""
     movies = storage.list_movies(user_id)
     while True:
-        new_movie = input(Fore.YELLOW + "Enter new movie name: ")
+        new_movie = input(Fore.YELLOW + f"{user}, Enter new movie name: ")
         if new_movie == "":
             print(Fore.RED + "Movie name must not be empty.")
         else:
@@ -99,7 +99,7 @@ def add_movie(user_id, user):
 
 def delete_movie(user_id, user):
     """deletes a movie from the user's collection in a database"""
-    movie_to_delete = input(Fore.YELLOW + "Enter movie name to delete: ")
+    movie_to_delete = input(Fore.YELLOW + f"{user}, Enter movie name to delete: ")
     movies = storage.list_movies(user_id)
     if movie_to_delete in movies:
         storage.delete_movie(movie_to_delete, user_id)
@@ -109,22 +109,15 @@ def delete_movie(user_id, user):
 
 def update_movie(user_id, user):
     """updates the rating of a movie from the user's collection in a database"""
-    movie_to_be_updated = input(Fore.YELLOW + "Enter movie name: ")
+    movie_to_be_updated = input(Fore.YELLOW + f"{user}, Enter movie name: ")
     movies = storage.list_movies(user_id)
     if movie_to_be_updated in movies:
-        while True:
-            try:
-                new_rating_for_existing_movie = float(
-                    input(Fore.YELLOW + "Enter new movie rating (0-10): ")
-                )
-                if is_valid_rating(new_rating_for_existing_movie):
-                    break
-                raise ValueError
-            except ValueError:
-                print(Fore.RED + "Please enter a valid rating")
-        storage.update_movie(
-            movie_to_be_updated, new_rating_for_existing_movie, user_id
-        )
+        try:
+            note_for_existing_movie = input(Fore.YELLOW + "Enter movie note: ")
+            storage.update_movie(movie_to_be_updated, note_for_existing_movie, user_id)
+        except ValueError:
+            print(Fore.RED + "Please enter a valid rating")
+
     else:
         print(Fore.RED + f"Movie {movie_to_be_updated} doesn't exist!")
 
@@ -161,7 +154,7 @@ def random_movie(user_id, user):
     random_movie_local = random.choice(list(movies.keys()))
     random_rating_local = movies[random_movie_local]["rating"]
     print(
-        f"Your movie for tonight: {random_movie_local}, it's rated {random_rating_local}"
+        f"{user}, Your movie for tonight: {random_movie_local}, it's rated {random_rating_local}"
     )
 
 
@@ -236,7 +229,7 @@ def search_movie(user_id, user):
     """searches a movie by its title in a user's collection in a
     database of movies"""
     movies = storage.list_movies(user_id)
-    movie_to_search = input(Fore.YELLOW + "Enter part of movie name: ")
+    movie_to_search = input(Fore.YELLOW + f"{user}, Enter part of movie name: ")
     print()
     movie_to_search_low = movie_to_search.lower()
     counter = 0
@@ -268,7 +261,7 @@ def sorted_year(user_id, user):
     while True:
         try:
             order = input(
-                Fore.YELLOW + "Do you want the latest movies " "first? (Y/N) "
+                Fore.YELLOW + f"{user}, Do you want the latest movies first? (Y/N) "
             )
             print()
             order_low = order.lower()
@@ -343,7 +336,9 @@ def filter_movies(user_id, user):
     The user is asked to enter the minimum rating, the start year and the
     end year to print only the movies within this characteristics"""
     movies = storage.list_movies(user_id)
-    user_input_min_rating = "Enter minimum rating (leave blank for no minimum rating): "
+    user_input_min_rating = (
+        f"{user}, Enter minimum rating (leave blank for no minimum rating): "
+    )
     min_rating = valid_filter_input(user_input_min_rating, "min_rating")
     user_input_start_year = "Enter start year (leave blank for no start year): "
     start_year = valid_filter_input(user_input_start_year, "start_year")
@@ -383,10 +378,13 @@ def serialize_movie(title, info):
     """creates a html card for an item"""
     year = info.get("year")
     poster = info.get("poster")
+    note = info.get("note")
     output = ""
     output += "<li>\n"
     output += '<div class="movie">\n'
-    output += f'<img class="movie-poster" src="{poster}" title>\n'
+    output += f'<img class="movie-poster" src="{poster}">\n'
+    if note:
+        output += f'<div class="note">{note}</div>\n'
     output += f'<div class="movie-title">{title}</div>\n'
     output += f'<div class="movie-year">{year}</div>\n'
     output += "</div>\n"

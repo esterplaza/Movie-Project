@@ -41,10 +41,29 @@ def create_new_user():
     return user_name
 
 
+def get_user_choice_user_menu(max_choices):
+    """requests the user to enter a choice"""
+    while True:
+        try:
+            user_choice_local = int(
+                input(Fore.YELLOW + f"Enter choice (0-" f"{max_choices}): ")
+            )
+            if 0 <= user_choice_local <= max_choices:
+                print()
+                break
+            raise ValueError
+        except ValueError:
+            print()
+            print(Fore.RED + "Invalid choice")
+            print()
+            menu_user()
+    return user_choice_local
+
+
 def main():
     main_header()
     max_user_choices = menu_user()
-    main_choice = mov.get_user_choice(max_user_choices)
+    main_choice = get_user_choice_user_menu(max_user_choices)
     if main_choice == 0:
         sys.exit()
     elif main_choice == max_user_choices:
