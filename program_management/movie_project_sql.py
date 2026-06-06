@@ -8,7 +8,7 @@ from colorama import Fore, Style
 import movie_storage.movie_storage_sql as storage
 import main
 
-API_KEY = "388d4af4"
+API_KEY = "ENTER YOUR API"
 HTML_TEMPLATE_PATH = "_static/index_template.html"
 
 colorama.init(autoreset=True)
@@ -361,9 +361,9 @@ def histogram_rating(user_id, user):
     )
     ratings = list_ratings(movies)
     plot.hist(ratings, bins=range(0, 11, 1), color="skyblue", edgecolor="black")
-    plot.xlabel(f"Movie Rating for {user}")
+    plot.xlabel("Movie Rating")
     plot.ylabel("Number of Movies")
-    plot.title("Movie Rating Distribution")
+    plot.title(f"Movie Rating Distribution for {user}")
     plot.savefig(f"{file_name_histogram}.png", dpi=300, bbox_inches="tight")
     plot.show()
 

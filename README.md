@@ -26,6 +26,11 @@ The application provides tools for browsing, searching, analyzing and visualizin
 
 ___
 
+### User Management
+
+- Create new users of the database
+- Each user have independent collections in the database
+
 ### Movie Management
 
 - View all movies in the database
@@ -69,11 +74,12 @@ ___
 
 ___
 
-1. The user searches for a movie.
-2. The application retrieves movie information (release year, rating and poster url) through the OMDb API.
-3. The movie data is stored in a local SQLite database.
-4. The user can manage and analyze their collection through the command-line interface.
-5. The application can generate a rating chart and a static website from the stored data.
+1. Select a user or create a new one.
+2. The user searches for a movie.
+3. The application retrieves movie information (release year, rating and poster url) through the OMDb API.
+4. The movie data is stored in a local SQLite database.
+5. The user can manage and analyze their collection through the command-line interface.
+6. The application can generate a rating chart and a static website from the stored data.
 
 ## **Installation**
 
@@ -128,10 +134,14 @@ ___
 Start the program:
 
 ```
-python movie_project_sql.py
+python main.py
 ```
 
-Example menu:
+Example main menu:
+
+![App_Menu Screenshot](images_readme/screenshot_users_menu.png)
+
+Example database management menu:
 
 ![App_Menu Screenshot](images_readme/screenshot_menu.png)
 
@@ -152,27 +162,31 @@ ___
 
 ### Example Workflow
 
-1. Add a movie by title.
+1. Select a User:
+
+![App_add_title](images_readme/screenshot_select_user.png)
+
+2. Add a movie by title.
 
 ![App_add_title](images_readme/screenshot_add_movie.png)
 
-2. List the movies in the database.
+3. List the movies in the database.
 
 ![App_list_movies](images_readme/screenshot_list_movies.png)
 
-3. Generate statistics:
+4. Generate statistics:
 
 ![App_list_stats](images_readme/screenshot_stats.png)
 
-4. Display movies sorted by year.
+5. Display movies sorted by year.
 
 ![App_sort_by_year](images_readme/screenshot_sort_by_year.png)
 
-5. Crate a rating Histogram.
+6. Crate a rating Histogram.
 
 ![App_histogram](images_readme/screenshot_histogram.png)
 
-6. Export the collection as a static HTML website.
+7. Export the collection as a static HTML website.
 
 ![App_web](images_readme/screenshot_web.png)
 
