@@ -1,14 +1,18 @@
+import os
 import random
 import statistics
 from datetime import datetime
 import requests
+from dotenv import load_dotenv
 import colorama
 import matplotlib.pyplot as plot
 from colorama import Fore, Style
 import movie_storage.movie_storage_sql as storage
 import main
 
-API_KEY = "ENTER YOUR API"
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
 HTML_TEMPLATE_PATH = "_static/index_template.html"
 
 colorama.init(autoreset=True)
