@@ -98,11 +98,19 @@ git clone https://github.com/esterplaza/Movie-Project.git
 pip install -r requirements.txt
 ```
 
-4. Enter your API in movie_project_sql.py
+4. Enter your API KEY.
+
+This project requires an API key to access the animal data service.
+
+Create a .env file in the project root directory:
 
 ```
-API_KEY = 'ENTER YOUR API'
+API_KEY="your_api_key_here"
 ```
+
+Replace your_api_key_here with your own API key.
+
+The .env file is not included in the repository for security reasons.
 
 5. Change git remote url to avoid accidental pushes to base project
 

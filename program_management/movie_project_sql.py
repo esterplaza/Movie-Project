@@ -424,7 +424,7 @@ def generate_website(user_id, user):
     in a database"""
     movies = storage.list_movies(user_id)
     html_movies = create_html(movies, user)
-    write_new_html(html_movies, f"_static\\index_{user}.html")
+    write_new_html(html_movies, f"index_{user}.html")
     print(Fore.BLUE + f"Website was generated successfully for {user}")
 
 
